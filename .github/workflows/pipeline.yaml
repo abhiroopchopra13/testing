@@ -1,4 +1,4 @@
-name: Branch Based Environment Deployment
+name: Branch Based Deployment
 
 on:
   push:
@@ -9,30 +9,39 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
 
-    # Branch name = Environment name mapping
-    environment:
-      name: ${{ github.ref_name }}
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    environment: dev
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to DEV environment"
 
-      - name: Print branch name
-        run: echo "Branch triggered: ${{ github.ref_name }}"
+  deploy-test:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    environment: test
 
-      - name: Install dependencies
-        run: |
-          echo "Installing project dependencies..."
-          # Add real install commands here
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to TEST environment"
 
-      - name: Run tests
-        run: |
-          echo "Running tests for ${{ github.ref_name }} environment"
-          # Add test commands here
+  deploy-stg:
+    if: github.ref == 'refs/heads/stg'
+    runs-on: ubuntu-latest
+    environment: stg
 
-      - name: Deploy step
-        run: |
-          echo "Deploying to ${{ github.ref_name }} environment 🚀"
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to STG environment"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: main
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to PROD environment"
