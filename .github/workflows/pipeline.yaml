@@ -1,0 +1,47 @@
+name: Branch Based Deployment
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - stg
+      - main
+
+jobs:
+
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to DEV environment"
+
+  deploy-test:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to TEST environment"
+
+  deploy-stg:
+    if: github.ref == 'refs/heads/stg'
+    runs-on: ubuntu-latest
+    environment: stg
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to STG environment"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: main
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Deploying to PROD environment"
