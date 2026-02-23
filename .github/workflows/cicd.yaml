@@ -1,0 +1,38 @@
+name: Branch Based Environment Deployment
+
+on:
+  push:
+    branches:
+      - dev
+      - test
+      - stg
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # Branch name = Environment name mapping
+    environment:
+      name: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Print branch name
+        run: echo "Branch triggered: ${{ github.ref_name }}"
+
+      - name: Install dependencies
+        run: |
+          echo "Installing project dependencies..."
+          # Add real install commands here
+
+      - name: Run tests
+        run: |
+          echo "Running tests for ${{ github.ref_name }} environment"
+          # Add test commands here
+
+      - name: Deploy step
+        run: |
+          echo "Deploying to ${{ github.ref_name }} environment 🚀"
