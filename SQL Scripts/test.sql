@@ -1,1 +1,1 @@
-select * from what;
+select * from Bhuvan;
